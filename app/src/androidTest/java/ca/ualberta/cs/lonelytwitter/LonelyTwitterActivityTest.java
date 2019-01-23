@@ -5,6 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import junit.framework.TestCase;
 
+import com.google.gson.Gson;
 /**
  * Created by wz on 14/09/15.
  */

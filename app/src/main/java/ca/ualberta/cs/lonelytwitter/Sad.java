@@ -1,5 +1,11 @@
 package ca.ualberta.cs.lonelytwitter;
 
+/**
+ *
+ * @author Dustin McRorie
+ *
+ */
+
 public class Sad extends Mood {
 
     public String getDate() {
