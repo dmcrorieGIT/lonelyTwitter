@@ -17,7 +17,7 @@ package ca.ualberta.cs.lonelytwitter;
 import java.util.Date;
 
 /**
- *
+ * Defines the "tweet" class, which is composed of a String and a date (also string)
  * @author Dustin McRorie
  * @version 1.3
  * @see 1.2
@@ -34,7 +34,7 @@ public class Tweet {
     }
 
     /**
-     *
+     * Constructor for the "Tweet" object
      * @param message, String type
      */
 
@@ -44,7 +44,7 @@ public class Tweet {
     }
 
     /**
-     *
+     * This method accesses the message attached to a given Tweet object
      * @return message, String type
      */
     public String getMessage(){

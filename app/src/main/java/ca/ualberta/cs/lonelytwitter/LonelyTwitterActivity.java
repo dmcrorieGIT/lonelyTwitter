@@ -28,6 +28,12 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+
+/**
+ * Loads list of previous tweets, and allows user to save new tweets
+ * @author Dustin McRorie
+ * @version 1.3
+ */
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file1.sav";
