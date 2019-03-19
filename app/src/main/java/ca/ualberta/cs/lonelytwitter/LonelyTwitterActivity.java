@@ -2,12 +2,9 @@ package ca.ualberta.cs.lonelytwitter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -28,150 +25,138 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
-/**
- * Loads list of previous tweets, and allows user to save new tweets
- * @author Dustin McRorie
- * @version 1.3
- */
 public class LonelyTwitterActivity extends Activity {
 
-	private static final String FILENAME = "file1.sav";
-	private EditText bodyText;
-	private ListView oldTweetsList;
-	private ArrayList<Tweet> tweetList = new ArrayList<Tweet>();
-	private ArrayAdapter<Tweet> adapter;
+    private static final String FILENAME = "file.sav";
+    private EditText bodyText;
+    private ListView oldTweetsList;
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+    private ArrayList<Tweet> tweetList;
+    private ArrayAdapter<Tweet> adapter;
 
-		bodyText = (EditText) findViewById(R.id.body);
-		Button saveButton = (Button) findViewById(R.id.save);
-		Button clearButton = (Button) findViewById(R.id.clear);
-		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
 
+        //Composite Pattern
+        /*
+        User ali = new User();
+        User ritvik = new User();
+        User vinay = new User();
 
-		clearButton.setOnClickListener(new View.OnClickListener() {
+        Book b1 = new Book("GOT");
+        Book b2 = new Book("Harry");
+        Book b3 = new Book("ABC");
+        Book b4 = new Book("XYZ");
+        Book b5 = new Book("Harvard");
 
-			public void onClick (View v) {
-				setResult(RESULT_OK);
-				tweetList = new ArrayList<Tweet>();
+        ali.add(ritvik);
+        ali.add(b1);
 
-				adapter.clear();
-				oldTweetsList.setAdapter(adapter);
+        ritvik.add(vinay);
+        ritvik.add(b2);
+        ritvik.add(b3);
+        ritvik.add(b4);
 
-				saveInFile();
-				//finish();
-			}
-		});
+        vinay.add(b5);
 
-		saveButton.setOnClickListener(new View.OnClickListener() {
+        ali.getBookName();
+        */
 
-			public void onClick(View v) {
-				setResult(RESULT_OK);
-				String text = bodyText.getText().toString();
+        //Singleton Implementation
+        NormalTweet happy = new NormalTweet("Happy!");
+        NormalTweet sad = new NormalTweet("Sad...");
+        NormalTweet content = new NormalTweet("Content.");
 
+        TweetList tweets = TweetList.getInstance();
 
+        tweets.add(happy);
+        tweets.add(sad);
 
-				if (text.isEmpty())
-				{
-					//Log.d("LOOOOOOOOOOK AT ME", "text was empty");
-					finish();
-				}
+        TweetList newtweets = TweetList.getInstance();
 
+        tweets.add(content);
 
-				else {
-					Tweet tweet = new Tweet(text);
-					tweetList.add(tweet);
-					//Log.d("LOOOOOOOOOOOKKK AT ME", "text not empty");
-
-					saveInFile();
-					//saveInFile(text, new Date(System.currentTimeMillis()));
-					finish();
-				}
-			}
-		});
+        //check to see if singleton worked
+        for (NormalTweet nt : newtweets){
+            Log.d("Tweets", nt.getMessage());
+        }
 
 
+        /*bodyText = (EditText) findViewById(R.id.body);
+        Button saveButton = (Button) findViewById(R.id.save);
+        oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
 
-	}
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                String text = bodyText.getText().toString();
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		//String[] tweets = loadFromFile();
+                NormalTweet newTweet = new NormalTweet("Hello");
 
-		loadFromFile();
+                tweetList.add(newTweet);
 
-		adapter = new ArrayAdapter<Tweet>(this,
-				R.layout.list_item, tweetList);
-		oldTweetsList.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
 
-		//android.util.Log.d("CREATE", tweetList.toString());
-	}
+                saveInFile();
+                //finish();
 
-	private void loadFromFile() {
-		//ArrayList<String> tweets = new ArrayList<String>();
-		try {
-			//FileInputStream fis = openFileInput(FILENAME);
-			//BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            }
+        });*/
+    }
 
-			FileReader in = new FileReader(new File(getFilesDir(), FILENAME));
-			Gson gson = new Gson();
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        /*loadFromFile();
+        adapter = new ArrayAdapter<Tweet>(this,
+                R.layout.list_item, tweetList);*/
+    }
 
-			Type lType = new TypeToken<ArrayList<Tweet>>(){}.getType();
+    private void loadFromFile() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 
-			//DEBUG: This line is problematic
-			ArrayList<Tweet> temp = new ArrayList<Tweet>();
-			temp = gson.fromJson(in, lType);
-			if (temp != null)
-				tweetList = temp;
-			else
-				Log.d("LOOOOOOOOOOOKKK AT ME", "The gson object was a null reference");
-			return;
-			//String line = in.readLine();
-			/*
-			while (line != null) {
-				tweets.add(line);
-				line = in.readLine();
-			}
-			*/
+            Gson gson = new Gson();
 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            //Taken from https://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+            // 2017-09-19
+            Type listType = new TypeToken<ArrayList<NormalTweet>>(){}.getType();
+            tweetList = gson.fromJson(in, listType);
 
-	}
-	
-	private void saveInFile() {
-		try {
-			//FileOutputStream fos = openFileOutput(FILENAME,
-					//Context.MODE_APPEND);
-			//BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            tweetList = new ArrayList<Tweet>();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException();
+        }
 
-			//taking the tweet list, converting it using Gson
-			FileWriter out = new FileWriter(new File(getFilesDir(), FILENAME));
-			Gson gson = new Gson();
+    }
 
-			gson.toJson(tweetList,out);
+    private void saveInFile() {
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME,
+                    Context.MODE_PRIVATE);
 
-			//fos.write(new String(date.toString() + " | " + text).getBytes());
-			out.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+
+            Gson gson = new Gson();
+            gson.toJson(tweetList, out);
+            out.flush();
+
+            fos.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException();
+        }
+    }
 }

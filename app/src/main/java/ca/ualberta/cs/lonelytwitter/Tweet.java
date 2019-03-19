@@ -14,7 +14,11 @@
 
 package ca.ualberta.cs.lonelytwitter;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Defines the "tweet" class, which is composed of a String and a date (also string)
@@ -24,13 +28,22 @@ import java.util.Date;
  *
  */
 
-public class Tweet {
+public abstract class Tweet {
 
     String message;
     Date date;
+    private UUID uuid;
+
+    public abstract Boolean isImportant();
 
     Tweet(){
         this.message = "default";
+    }
+
+    public Tweet (String message, Date date, UUID uuid) {
+        this.message = message;
+        this.date = date;
+        this.uuid = uuid;
     }
 
     /**
@@ -38,9 +51,11 @@ public class Tweet {
      * @param message, String type
      */
 
-    Tweet(String message){
+    public Tweet(String message){
 
         this.message = message;
+        this.date = new Date();
+        this.uuid = UUID.randomUUID();
     }
 
     /**
@@ -52,4 +67,16 @@ public class Tweet {
         return message;
     }
 
+    public UUID getUuid(){
+        return this.uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public String toString() {
+        return date.toString() + " | " + message;
+    }
 }
