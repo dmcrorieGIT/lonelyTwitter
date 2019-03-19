@@ -1,5 +1,8 @@
 package ca.ualberta.cs.lonelytwitter;
 
+import java.util.Date;
+import java.util.UUID;
+
 /**
  * Stores the mood and date when the mood was changed
  * @author Dustin McRorie
@@ -8,6 +11,7 @@ package ca.ualberta.cs.lonelytwitter;
 public abstract class Mood {
 
     protected String mood;
-    protected String date = "01/01/1970";
+    protected Date date;
+    protected UUID uuid;
 
 }

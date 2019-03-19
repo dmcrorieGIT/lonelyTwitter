@@ -1,5 +1,7 @@
 package ca.ualberta.cs.lonelytwitter;
 
+import java.util.Date;
+
 /**
  * Changes the mood of the super class to a sad message
  * @author Dustin McRorie
@@ -12,7 +14,7 @@ public class Sad extends Mood {
      * Retrieves the current date
      * @return date, String type
      */
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -20,7 +22,7 @@ public class Sad extends Mood {
      * Sets the date of the superclass object
      * @param date, String type
      */
-    public void setDate(String date) {
+    public void setDate(Date date) {
         super.date = date;
     }
 
